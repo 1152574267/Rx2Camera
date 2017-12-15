@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Rx2Camera</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_showlog">Show Log</string>
+    <string name="action_successive_data">SuccessiveDataRequest</string>
+    <string name="action_periodic_data">PeriodicDataRequest</string>
+    <string name="action_one_shot">OneShotRequest</string>
+    <string name="action_take_picture">TakePictureRequest</string>
+    <string name="action_zoom">Zoom</string>
+    <string name="action_smooth_zoom">Smooth Zoom</string>
+    <string name="action_open_flash">Open Flash</string>
+    <string name="action_close_flash">Close Flash</string>
+    <string name="action_face_detection">Face Detection</string>
+    <string name="action_switch_camera">Switch Camera</string>
+</resources>
