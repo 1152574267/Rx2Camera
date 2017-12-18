@@ -98,6 +98,7 @@ public class TakePictureRequest extends BaseRxCameraRequest {
                     public void onPictureTaken(byte[] data, Camera camera) {
                         if (isContinuePreview) {
                             rxCamera.startPreview().doOnError(new Consumer<Throwable>() {
+
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
                                     emitter.onError(throwable);

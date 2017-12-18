@@ -43,6 +43,7 @@ public class FaceDetectionRequest extends BaseRxCameraRequest implements Camera.
                 rxCamera.getNativeCamera().startFaceDetection();
             }
         }).doOnDispose(new Action() {
+
             @Override
             public void run() throws Exception {
                 rxCamera.getNativeCamera().setFaceDetectionListener(null);

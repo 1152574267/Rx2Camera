@@ -363,6 +363,7 @@ public class CameraActivity extends AppCompatActivity {
                 showLog("Captured!");
             }
         }, 480, 640, ImageFormat.JPEG, true).subscribe(new Consumer<RxCameraData>() {
+
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
                 String path = Environment.getExternalStorageDirectory() + "/test.jpg";
@@ -378,6 +379,7 @@ public class CameraActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 showLog("Save file on " + path);
             }
         });
@@ -501,6 +503,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private void faceDetection() {
         camera.request().faceDetectionRequest().subscribe(new Consumer<RxCameraData>() {
+
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
                 showLog("on face detection: " + rxCameraData.faceList);
