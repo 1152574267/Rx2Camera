@@ -194,6 +194,7 @@ public class CameraActivity extends AppCompatActivity {
                 .build();
         Log.d(TAG, "config: " + config);
         RxCamera.open(this, config).flatMap(new Function<RxCamera, Observable<RxCamera>>() {
+
             @Override
             public Observable<RxCamera> apply(RxCamera rxCamera) throws Exception {
                 showLog("isopen: " + rxCamera.isOpenCamera() + ", thread: " + Thread.currentThread());
@@ -201,12 +202,14 @@ public class CameraActivity extends AppCompatActivity {
                 return rxCamera.bindTexture(textureView);
             }
         }).flatMap(new Function<RxCamera, Observable<RxCamera>>() {
+
             @Override
             public Observable<RxCamera> apply(RxCamera rxCamera) throws Exception {
                 showLog("isbindsurface: " + rxCamera.isBindSurface() + ", thread: " + Thread.currentThread());
                 return rxCamera.startPreview();
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<RxCamera>() {
+
             @Override
             public void onSubscribe(Disposable d) {
 

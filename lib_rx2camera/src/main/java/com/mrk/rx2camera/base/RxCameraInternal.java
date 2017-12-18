@@ -347,6 +347,7 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
             if (bindTextureView.getSurfaceTexture() != null) {
                 camera.setPreviewTexture(bindTextureView.getSurfaceTexture());
             }
+
             isBindSurface = true;
         } catch (Exception e) {
             bindSurfaceFailedMessage = e.getMessage();
@@ -365,6 +366,7 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
 
         try {
             isSurfaceAvailable = false;
+
             if (bindTextureView != null && bindTextureView.isAvailable()) {
                 isSurfaceAvailable = true;
             }
@@ -372,6 +374,7 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
                     && bindSurfaceView.getHolder() != null && !bindSurfaceView.getHolder().isCreating()) {
                 isSurfaceAvailable = true;
             }
+
             if (!isSurfaceAvailable && cameraConfig.isHandleSurfaceEvent) {
                 isNeedStartPreviewLater = true;
                 return true;
