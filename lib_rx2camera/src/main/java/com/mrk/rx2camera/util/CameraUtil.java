@@ -26,6 +26,7 @@ public class CameraUtil {
         if (cameraNumber == -1) {
             cameraNumber = Camera.getNumberOfCameras();
         }
+
         return cameraNumber;
     }
 
@@ -40,6 +41,7 @@ public class CameraUtil {
                 }
             }
         }
+
         return frontCameraId;
     }
 
@@ -71,6 +73,7 @@ public class CameraUtil {
                 }
             }
         }
+
         return backCameraId;
     }
 

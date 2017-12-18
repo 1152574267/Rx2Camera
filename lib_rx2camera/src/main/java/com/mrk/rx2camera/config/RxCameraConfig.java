@@ -10,34 +10,20 @@ import com.mrk.rx2camera.util.CameraUtil;
  * store the config of camera, you must set the config from {@link Builder}
  */
 public class RxCameraConfig {
-
-    public static Point DEFAULT_PREFER_PREVIEW_SIZE = new Point(320, 240);
-
     public final boolean isFaceCamera;
-
-    public final int currentCameraId;
-
-    public final Point preferPreviewSize;
-
-    public final boolean acceptSquarePreview;
-
-    public final int minPreferPreviewFrameRate;
-
-    public final int maxPreferPreviewFrameRate;
-
-    public final int previewFormat;
-
-    public final int displayOrientation;
-
     public final boolean isAutoFocus;
-
-    public final int previewBufferSize;
-
-    public final boolean isHandleSurfaceEvent;
-
-    public final int cameraOrientation;
-
     public final boolean muteShutterSound;
+    public final boolean acceptSquarePreview;
+    public final boolean isHandleSurfaceEvent;
+    public final int currentCameraId;
+    public final int minPreferPreviewFrameRate;
+    public final int maxPreferPreviewFrameRate;
+    public final int previewBufferSize;
+    public final int previewFormat;
+    public final int displayOrientation;
+    public final int cameraOrientation;
+    public final Point preferPreviewSize;
+    public static Point DEFAULT_PREFER_PREVIEW_SIZE = new Point(320, 240);
 
     public RxCameraConfig(Builder builder) {
         isFaceCamera = builder.isFaceCamera;
@@ -69,33 +55,36 @@ public class RxCameraConfig {
         result.append(String.format("cameraOrientation: %d, ", cameraOrientation));
         result.append(String.format("acceptSquarePreview: %s, ", acceptSquarePreview));
         result.append(String.format("muteShutterSound: %s", muteShutterSound));
+
         return result.toString();
     }
 
     public static class Builder {
         private boolean isFaceCamera = false;
-        private int currentCameraId = -1;
-        private Point preferPreviewSize = null;
+        private boolean isAutoFocus = false;
+        private boolean muteShutterSound = false;
         private boolean acceptSquarePreview = true;
+        private boolean isHandleSurfaceEvent = false;
+        private int currentCameraId = -1;
         private int minPreferPreviewFrameRate = -1;
         private int maxPreferPreviewFrameRate = -1;
+        private int previewBufferSize = -1;
         private int previewFormat = -1;
         private int displayOrientation = -1;
-        private boolean isAutoFocus = false;
-        private int previewBufferSize = -1;
-        private boolean isHandleSurfaceEvent = false;
         private int cameraOrientation = -1;
-        private boolean muteShutterSound = false;
+        private Point preferPreviewSize = null;
 
         public Builder useFrontCamera() {
             isFaceCamera = true;
             currentCameraId = CameraUtil.getFrontCameraId();
+
             return this;
         }
 
         public Builder useBackCamera() {
             isFaceCamera = false;
             currentCameraId = CameraUtil.getBackCameraId();
+
             return this;
         }
 
@@ -103,8 +92,10 @@ public class RxCameraConfig {
             if (size == null) {
                 return this;
             }
+
             preferPreviewSize = size;
             this.acceptSquarePreview = acceptSquarePreview;
+
             return this;
         }
 
@@ -112,13 +103,16 @@ public class RxCameraConfig {
             if (minFrameRate <= 0 || maxFrameRate <= 0 || maxFrameRate < minFrameRate) {
                 return this;
             }
+
             minPreferPreviewFrameRate = minFrameRate;
             maxPreferPreviewFrameRate = maxFrameRate;
+
             return this;
         }
 
         public Builder setPreviewFormat(int previewFormat) {
             this.previewFormat = previewFormat;
+
             return this;
         }
 
@@ -126,6 +120,7 @@ public class RxCameraConfig {
             if (displayOrientation < 0) {
                 return this;
             }
+
             if (displayOrientation != 0 &&
                     displayOrientation != 90 &&
                     displayOrientation != 180 &&
@@ -133,26 +128,31 @@ public class RxCameraConfig {
                 throw new IllegalArgumentException("display orientation: " + displayOrientation + ". (must be 0, 90, 180, or 270)");
 
             this.displayOrientation = displayOrientation;
+
             return this;
         }
 
         public Builder setAutoFocus(boolean isAutoFocus) {
             this.isAutoFocus = isAutoFocus;
+
             return this;
         }
 
         public Builder setHandleSurfaceEvent(boolean isHandle) {
             isHandleSurfaceEvent = isHandle;
+
             return this;
         }
 
         public Builder setPreviewBufferSize(int size) {
             previewBufferSize = size;
+
             return this;
         }
 
         public Builder setMuteShutterSound(boolean mute) {
             muteShutterSound = mute;
+
             return this;
         }
 
@@ -164,6 +164,7 @@ public class RxCameraConfig {
                     currentCameraId = CameraUtil.getBackCameraId();
                 }
             }
+
             if (preferPreviewSize == null) {
                 preferPreviewSize = RxCameraConfig.DEFAULT_PREFER_PREVIEW_SIZE;
             }
@@ -172,6 +173,7 @@ public class RxCameraConfig {
             if (cameraInfo != null) {
                 cameraOrientation = cameraInfo.orientation;
             }
+
             return this;
         }
 
@@ -182,18 +184,20 @@ public class RxCameraConfig {
                 useBackCamera();
             }
             setPreferPreviewSize(config.preferPreviewSize, config.acceptSquarePreview);
-            setPreferPreviewFrameRate(config.maxPreferPreviewFrameRate, config.minPreferPreviewFrameRate);
+            setPreferPreviewFrameRate(config.minPreferPreviewFrameRate, config.maxPreferPreviewFrameRate);
             setPreviewFormat(config.previewFormat);
             setDisplayOrientation(config.displayOrientation);
             setAutoFocus(config.isAutoFocus);
             setHandleSurfaceEvent(config.isHandleSurfaceEvent);
             setPreviewBufferSize(config.previewBufferSize);
             setMuteShutterSound(config.muteShutterSound);
+
             return this;
         }
 
         public RxCameraConfig build() {
             setProperConfigVal();
+
             return new RxCameraConfig(this);
         }
     }
