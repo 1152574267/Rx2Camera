@@ -420,8 +420,9 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
         }
 
         try {
-            camera.setPreviewCallback(null);
+            camera.stopPreview();
             camera.release();
+            camera = null;
 
             RxCameraConfig.Builder builder = new RxCameraConfig.Builder();
             builder.from(getConfig());

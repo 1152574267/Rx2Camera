@@ -510,6 +510,7 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         camera.switchCamera().subscribe(new Consumer<Boolean>() {
+
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 showLog("switch camera result: " + aBoolean);
