@@ -388,7 +388,8 @@ public class CameraActivity extends AppCompatActivity {
             return;
         }
 
-        camera.action().zoom(10).subscribe(new Observer<RxCamera>() {
+        camera.action().zoom(20).subscribe(new Observer<RxCamera>() {
+
             @Override
             public void onSubscribe(Disposable d) {
 
