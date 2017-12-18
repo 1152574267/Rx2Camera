@@ -70,11 +70,13 @@ public class RxCameraActionBuilder {
                     emitter.onError(new ZoomFailedException(ZoomFailedException.Reason.ZOOM_NOT_SUPPORT));
                     return;
                 }
+
                 int maxZoomLevel = parameters.getMaxZoom();
                 if (level < 0 || level > maxZoomLevel) {
                     emitter.onError(new ZoomFailedException(ZoomFailedException.Reason.ZOOM_RANGE_ERROR));
                     return;
                 }
+
                 rxCamera.getNativeCamera().startSmoothZoom(level);
                 emitter.onNext(rxCamera);
             }
