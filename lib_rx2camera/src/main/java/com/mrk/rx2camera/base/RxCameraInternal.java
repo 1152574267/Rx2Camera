@@ -396,14 +396,16 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
     }
 
     public boolean closeCameraInternal() {
-        if (camera == null) {
+        if (camera == null || !isSurfaceAvailable) {
             return false;
         }
 
         try {
+            camera.stopPreview();
+            reset();
             camera.setPreviewCallback(null);
             camera.release();
-            reset();
+            camera = null;
         } catch (Exception e) {
             Log.e(TAG, "close camera failed: " + e.getMessage());
             return false;
