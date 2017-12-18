@@ -81,11 +81,13 @@ public class CameraUtil {
         if (cameraId < 0 || cameraId > getCameraNumber()) {
             return -1;
         }
+
+        int result;
+        int degrees = 0;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, cameraInfo);
 
         int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-        int degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0:
                 degrees = 0;
@@ -101,22 +103,23 @@ public class CameraUtil {
                 break;
         }
 
-        int result;
         if (isFrontCamera) {
             result = (cameraInfo.orientation + degrees) % 360;
             result = (360 - result) % 360;
         } else {
             result = (cameraInfo.orientation - degrees + 360) % 360;
         }
+
         return result;
     }
 
     public static int[] findClosestFpsRange(Camera camera, int minFrameRate, int maxFrameRate) {
         minFrameRate *= 1000;
         maxFrameRate *= 1000;
-        Camera.Parameters parameters = camera.getParameters();
         int minIndex = 0;
         int minDiff = Integer.MAX_VALUE;
+
+        Camera.Parameters parameters = camera.getParameters();
         List<int[]> rangeList = parameters.getSupportedPreviewFpsRange();
         Log.d(TAG, "support preview fps range list: " + dumpFpsRangeList(rangeList));
         for (int i = 0; i < rangeList.size(); i++) {
@@ -124,6 +127,7 @@ public class CameraUtil {
             if (fpsRange.length != 2) {
                 continue;
             }
+
             int minFps = fpsRange[0] / 1000;
             int maxFps = fpsRange[1] / 1000;
             int diff = Math.abs(minFps - minFrameRate) + Math.abs(maxFps - maxFrameRate);
@@ -132,18 +136,22 @@ public class CameraUtil {
                 minIndex = i;
             }
         }
+
         int[] result = rangeList.get(minIndex);
         return result;
     }
 
     private static String dumpFpsRangeList(List<int[]> rangeList) {
         String result = "";
+
         for (int[] range : rangeList) {
             if (range.length != 2) {
                 continue;
             }
+
             result += "(" + range[0] + "," + range[1] + ") ";
         }
+
         return result;
     }
 
@@ -174,11 +182,12 @@ public class CameraUtil {
     public static Camera.Size findClosestNonSquarePreviewSize(Camera camera, Point preferSize) {
         int preferX = preferSize.x;
         int preferY = preferSize.y;
+        int minDiff = Integer.MAX_VALUE;
+        int index = 0;
+
         Camera.Parameters parameters = camera.getParameters();
         List<Camera.Size> allSupportSizes = parameters.getSupportedPreviewSizes();
         Log.d(TAG, "all support preview size: " + dumpPreviewSizeList(allSupportSizes));
-        int minDiff = Integer.MAX_VALUE;
-        int index = 0;
         for (int i = 0; i < allSupportSizes.size(); i++) {
             Camera.Size size = allSupportSizes.get(i);
             int x = size.width;
@@ -198,9 +207,11 @@ public class CameraUtil {
 
     private static String dumpPreviewSizeList(List<Camera.Size> sizes) {
         String result = "";
+
         for (Camera.Size size : sizes) {
             result += "(" + size.width + "," + size.height + ") ";
         }
+
         return result;
     }
 

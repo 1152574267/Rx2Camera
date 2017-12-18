@@ -61,6 +61,10 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
     private String previewFailedMessage;
     private Throwable previewFailedCause;
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void setConfig(RxCameraConfig config) {
         this.cameraConfig = config;
     }
@@ -75,10 +79,6 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
 
     public Point getFinalPreviewSize() {
         return finalPreviewSize;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public boolean openCameraInternal() {
@@ -172,14 +172,6 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
             }
         }
 
-        // set enableShutterSound (only supported for API 17 and newer)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-                && cameraConfig.muteShutterSound) {
-            if (CameraUtil.canDisableShutter(cameraConfig.currentCameraId)) {
-                camera.enableShutterSound(false);
-            }
-        }
-
         // set all parameters
         try {
             camera.setParameters(parameters);
@@ -188,6 +180,14 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
             openCameraFailedCause = e;
             Log.e(TAG, "set final parameter failed: " + e.getMessage());
             return false;
+        }
+
+        // set enableShutterSound (only supported for API 17 and newer)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                && cameraConfig.muteShutterSound) {
+            if (CameraUtil.canDisableShutter(cameraConfig.currentCameraId)) {
+                camera.enableShutterSound(false);
+            }
         }
 
         // set display orientation
@@ -203,7 +203,6 @@ public class RxCameraInternal implements SurfaceCallback.SurfaceListener, Camera
             Log.e(TAG, "set camera orientation failed: " + e.getMessage());
             return false;
         }
-
         isOpenCamera = true;
 
         return true;
