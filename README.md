@@ -1,5 +1,9 @@
 # Rx2Camera
 
+介绍：
+
+Rx2风格的相机
+
 App框架：
 
 Rxjava2 + RxAndroid2 + Camera模块化开发
