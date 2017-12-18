@@ -331,6 +331,7 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         camera.request().oneShotRequest().subscribe(new Consumer<RxCameraData>() {
+
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
                 showLog("one shot request, cameraData.length: " + rxCameraData.cameraData.length);

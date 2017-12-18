@@ -30,6 +30,7 @@ public class TakeOneShotRequest extends BaseRxCameraRequest implements OnRxCamer
                 TakeOneShotRequest.this.emitter = emitter;
             }
         }).doOnSubscribe(new Consumer<Disposable>() {
+
             @Override
             public void accept(Disposable disposable) throws Exception {
                 rxCamera.installOneShotPreviewCallback(TakeOneShotRequest.this);
