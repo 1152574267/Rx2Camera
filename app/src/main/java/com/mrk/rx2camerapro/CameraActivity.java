@@ -445,6 +445,7 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         camera.action().flashAction(true).subscribe(new Observer<RxCamera>() {
+
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -473,6 +474,7 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         camera.action().flashAction(false).subscribe(new Observer<RxCamera>() {
+
             @Override
             public void onSubscribe(Disposable d) {
 

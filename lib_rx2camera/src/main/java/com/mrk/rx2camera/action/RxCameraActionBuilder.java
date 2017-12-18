@@ -89,6 +89,7 @@ public class RxCameraActionBuilder {
                     emitter.onError(new SettingFlashException(SettingFlashException.Reason.NOT_SUPPORT));
                     return;
                 }
+
                 if (isOn) {
                     if (parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
