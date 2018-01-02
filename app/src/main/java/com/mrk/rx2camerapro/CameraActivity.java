@@ -267,7 +267,7 @@ public class CameraActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_show_log:
-                toggleLogArea();
+//                toggleLogArea();
                 break;
             case R.id.action_successive_data:
                 requestSuccessiveData();
