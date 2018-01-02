@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mrk.rx2camera.base.RxCamera;
 import com.mrk.rx2camera.config.RxCameraConfig;
 import com.mrk.rx2camera.data.RxCameraData;
@@ -77,10 +78,10 @@ public class CameraActivity extends AppCompatActivity {
         logTextView = (TextView) findViewById(R.id.log_textview);
         logArea = (ScrollView) findViewById(R.id.log_area);
 
-        openCameraBtn.setOnClickListener(new View.OnClickListener() {
+        RxView.clicks(openCameraBtn).subscribe(new Consumer<Object>() {
 
             @Override
-            public void onClick(View v) {
+            public void accept(Object o) throws Exception {
                 if (!checkPermission()) {
                     requestPermission();
                 } else {
@@ -89,10 +90,10 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
-        closeCameraBtn.setOnClickListener(new View.OnClickListener() {
+        RxView.clicks(closeCameraBtn).subscribe(new Consumer<Object>() {
 
             @Override
-            public void onClick(View v) {
+            public void accept(Object o) throws Exception {
                 if (camera != null) {
                     camera.closeCameraWithResult().subscribe(new Consumer<Boolean>() {
 
