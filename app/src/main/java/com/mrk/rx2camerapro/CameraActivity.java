@@ -22,8 +22,6 @@ import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -59,8 +57,6 @@ public class CameraActivity extends AppCompatActivity {
     private TextureView textureView;
     private Button openCameraBtn;
     private Button closeCameraBtn;
-    private TextView logTextView;
-    private ScrollView logArea;
 
     private RxCamera camera;
 
@@ -75,8 +71,6 @@ public class CameraActivity extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.preview_surface);
         openCameraBtn = (Button) findViewById(R.id.open_camera);
         closeCameraBtn = (Button) findViewById(R.id.close_camera);
-        logTextView = (TextView) findViewById(R.id.log_textview);
-        logArea = (ScrollView) findViewById(R.id.log_area);
 
         RxView.clicks(openCameraBtn).subscribe(new Consumer<Object>() {
 
@@ -99,7 +93,7 @@ public class CameraActivity extends AppCompatActivity {
 
                         @Override
                         public void accept(Boolean aBoolean) throws Exception {
-                            showLog("close camera finished, success: " + aBoolean);
+                            Log.d(TAG, "close camera finished, success: " + aBoolean);
                         }
                     });
                 }
@@ -142,12 +136,12 @@ public class CameraActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            showLog("area focus and metering failed: " + e.getMessage());
+                            Log.d(TAG, "area focus and metering failed: " + e.getMessage());
                         }
 
                         @Override
                         public void onNext(Object value) {
-                            showLog(String.format("area focus and metering success, x: %s, y: %s, area: %s", x, y, rect.toShortString()));
+                            Log.d(TAG, String.format("area focus and metering success, x: %s, y: %s, area: %s", x, y, rect.toShortString()));
                         }
                     });
                 }
@@ -198,7 +192,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public Observable<RxCamera> apply(RxCamera rxCamera) throws Exception {
-                showLog("isopen: " + rxCamera.isOpenCamera() + ", thread: " + Thread.currentThread());
+                Log.d(TAG, "isopen: " + rxCamera.isOpenCamera() + ", thread: " + Thread.currentThread());
                 camera = rxCamera;
                 return rxCamera.bindTexture(textureView);
             }
@@ -206,7 +200,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public Observable<RxCamera> apply(RxCamera rxCamera) throws Exception {
-                showLog("isbindsurface: " + rxCamera.isBindSurface() + ", thread: " + Thread.currentThread());
+                Log.d(TAG, "isbindsurface: " + rxCamera.isBindSurface() + ", thread: " + Thread.currentThread());
                 return rxCamera.startPreview();
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<RxCamera>() {
@@ -219,13 +213,13 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onNext(RxCamera rxCamera) {
                 camera = rxCamera;
-                showLog("open camera success: " + camera);
+                Log.d(TAG, "open camera success: " + camera);
                 Toast.makeText(CameraActivity.this, "Now you can tap to focus", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(Throwable e) {
-                showLog("open camera error: " + e.getMessage());
+                Log.d(TAG, "open camera error: " + e.getMessage());
             }
 
             @Override
@@ -234,19 +228,6 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void showLog(String s) {
-        Log.d(TAG, s);
-        logTextView.append(s + "\n");
-        logTextView.post(new Runnable() {
-
-            @Override
-            public void run() {
-                logArea.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-    }
-
 
     @Override
     protected void onDestroy() {
@@ -267,9 +248,6 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_show_log:
-//                toggleLogArea();
-                break;
             case R.id.action_successive_data:
                 requestSuccessiveData();
                 break;
@@ -305,14 +283,6 @@ public class CameraActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void toggleLogArea() {
-        if (logArea.getVisibility() == View.VISIBLE) {
-            logArea.setVisibility(View.GONE);
-        } else {
-            logArea.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void requestSuccessiveData() {
         if (!checkCamera()) {
             return;
@@ -321,7 +291,7 @@ public class CameraActivity extends AppCompatActivity {
         camera.request().successiveDataRequest().subscribe(new Consumer<RxCameraData>() {
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
-                showLog("successiveData, cameraData.length: " + rxCameraData.cameraData.length);
+                Log.d(TAG, "successiveData, cameraData.length: " + rxCameraData.cameraData.length);
             }
         });
     }
@@ -335,7 +305,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
-                showLog("one shot request, cameraData.length: " + rxCameraData.cameraData.length);
+                Log.d(TAG, "one shot request, cameraData.length: " + rxCameraData.cameraData.length);
             }
         });
     }
@@ -348,7 +318,7 @@ public class CameraActivity extends AppCompatActivity {
         camera.request().periodicDataRequest(1000).subscribe(new Consumer<RxCameraData>() {
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
-                showLog("periodic request, cameraData.length: " + rxCameraData.cameraData.length);
+                Log.d(TAG, "periodic request, cameraData.length: " + rxCameraData.cameraData.length);
             }
         });
     }
@@ -362,7 +332,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void call() {
-                showLog("Captured!");
+                Log.d(TAG, "Captured!");
             }
         }, 480, 640, ImageFormat.JPEG, true).subscribe(new Consumer<RxCameraData>() {
 
@@ -382,7 +352,7 @@ public class CameraActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                showLog("Save file on " + path);
+                Log.d(TAG, "Save file on " + path);
             }
         });
     }
@@ -401,12 +371,12 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void onNext(RxCamera rxCamera) {
-                showLog("zoom success: " + rxCamera);
+                Log.d(TAG, "zoom success: " + rxCamera);
             }
 
             @Override
             public void onError(Throwable e) {
-                showLog("zoom error: " + e.getMessage());
+                Log.d(TAG, "zoom error: " + e.getMessage());
             }
 
             @Override
@@ -430,12 +400,12 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void onNext(RxCamera rxCamera) {
-                showLog("zoom success: " + rxCamera);
+                Log.d(TAG, "zoom success: " + rxCamera);
             }
 
             @Override
             public void onError(Throwable e) {
-                showLog("zoom error: " + e.getMessage());
+                Log.d(TAG, "zoom error: " + e.getMessage());
             }
 
             @Override
@@ -459,12 +429,12 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void onNext(RxCamera value) {
-                showLog("open flash");
+                Log.d(TAG, "open flash");
             }
 
             @Override
             public void onError(Throwable e) {
-                showLog("open flash error: " + e.getMessage());
+                Log.d(TAG, "open flash error: " + e.getMessage());
             }
 
             @Override
@@ -488,12 +458,12 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void onNext(RxCamera value) {
-                showLog("close flash");
+                Log.d(TAG, "close flash");
             }
 
             @Override
             public void onError(Throwable e) {
-                showLog("close flash error: " + e.getMessage());
+                Log.d(TAG, "close flash error: " + e.getMessage());
             }
 
             @Override
@@ -508,7 +478,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void accept(RxCameraData rxCameraData) throws Exception {
-                showLog("on face detection: " + rxCameraData.faceList);
+                Log.d(TAG, "on face detection: " + rxCameraData.faceList);
             }
         });
     }
@@ -522,7 +492,7 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void accept(Boolean aBoolean) throws Exception {
-                showLog("switch camera result: " + aBoolean);
+                Log.d(TAG, "switch camera result: " + aBoolean);
             }
         });
     }

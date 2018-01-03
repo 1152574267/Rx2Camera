@@ -36,19 +36,4 @@
             android:textAllCaps="false" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/log_area"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/white"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/log_textview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAllCaps="false" />
-    </ScrollView>
-
 </RelativeLayout>
