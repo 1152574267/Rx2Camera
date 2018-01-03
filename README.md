@@ -6,7 +6,7 @@ Rx2风格的相机
 
 App框架：
 
-采用Rxjava2 + RxAndroid2 + Camera模块化开发的项目
+采用Rxjava2 + RxAndroid2 + RxBinding2 + Camera模块化开发的项目
 
 主要功能：
 
